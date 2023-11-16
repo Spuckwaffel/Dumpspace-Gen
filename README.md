@@ -1,5 +1,5 @@
 <h1 align="left">Dumpspace Gen<br /><img src="logo.png?raw=true" alt="Logo" height="250px" align="right" /></h1>
-<p align="left"><img src="https://img.shields.io/github/license/Spuckwaffe/lDumpspace-Gen" alt="License" /></p>
+<p align="left"><img src="https://img.shields.io/github/license/Spuckwaffel/Dumpspace-Gen" alt="License" /></p>
 <p>The Dumpspace Gen library adds support for your dumper for generating Dumspace files of your game.</p>
 <p><a href="#features">Features</a> &bull; <a href="#getting-started">Getting Started</a> &bull;<a href="#contributing">Contributing</a> &bull; <a href="#license">License</a> &bull; <a href="https://discord.gg/KQrEsbJ7cH">Discord</a></p>
 <h2>Features</h2>
