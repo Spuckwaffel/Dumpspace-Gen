@@ -191,11 +191,14 @@ void DSGen::dump()
 	if (directory.empty())
 		throw std::exception("Please initialize a directory first!");
 
+	constexpr auto version = 10201;
+
 	auto saveToDisk = [&](const nlohmann::json& json, const std::string& fileName)
 	{
 		nlohmann::json j;
 		j["updated_at"] = dumpTimeStamp;
 		j["data"] = json;
+		j["version"] = version;
 
 		std::ofstream file(directory / fileName);
 		file << j.dump();
