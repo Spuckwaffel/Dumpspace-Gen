@@ -87,6 +87,7 @@ public:
 		int offset;
 		int bitOffset;
 		int size;
+		int arrayDim;
 
 
 	};
@@ -190,6 +191,7 @@ public:
 	 * \param extendedType the extended type, if any (e,g ULevel* -> *, int& -> &, or empty)
 	 * \param offset the offset of the member within the struct or class
 	 * \param size the size of the member
+	 * \param arrayDim the array dimension of the member, default 1 (int foo -> 1, int foo[123] -> 123)
 	 * \param bitOffset the bit Offset of the member, leave -1 if member has no bitOffset
 	 */
 	static void addMemberToStructOrClass(
@@ -200,6 +202,7 @@ public:
 		const std::string& extendedType, 
 		int offset, 
 		int size,
+		int arrayDim = 1,
 		int bitOffset = -1
 	);
 
@@ -210,6 +213,7 @@ public:
 	 * \param memberType memberType struct
 	 * \param offset the offset of the member within the struct or class
 	 * \param size the size of the member
+	 * \param arrayDim the array dimension of the member, default 1 (int foo -> 1, int foo[123] -> 123)
 	 * \param bitOffset the bit Offset of the member, leave -1 if member has no bitOffset
 	 */
 	static void addMemberToStructOrClass(
@@ -218,6 +222,7 @@ public:
 		const MemberType& memberType, 
 		int offset, 
 		int size,
+		int arrayDim = 1,
 		int bitOffset = -1
 	);
 

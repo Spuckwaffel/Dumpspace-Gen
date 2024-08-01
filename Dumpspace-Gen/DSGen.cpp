@@ -52,7 +52,7 @@ DSGen::MemberType DSGen::createMemberType(EType type, const std::string& typeNam
 }
 
 void DSGen::addMemberToStructOrClass(ClassHolder& classHolder, const std::string& memberName, EType type,
-	const std::string& typeName, const std::string& extendedType, int offset, int size, int bitOffset)
+	const std::string& typeName, const std::string& extendedType, int offset, int size, int arrayDim, int bitOffset)
 {
 	MemberType t;
 	t.type = type;
@@ -64,19 +64,21 @@ void DSGen::addMemberToStructOrClass(ClassHolder& classHolder, const std::string
 	m.memberName = memberName;
 	m.offset = offset;
 	m.size = size;
+	m.arrayDim = arrayDim;
 	m.bitOffset = bitOffset;
 
 	classHolder.members.push_back(m);
 }
 
 void DSGen::addMemberToStructOrClass(ClassHolder& classHolder, const std::string& memberName, const MemberType& memberType,
-	int offset, int size, int bitOffset)
+	int offset, int size, int arrayDim, int bitOffset)
 {
 	MemberDefinition m;
 	m.memberType = memberType;
 	m.memberName = memberName;
 	m.offset = offset;
 	m.size = size;
+	m.arrayDim = arrayDim;
 	m.bitOffset = bitOffset;
 
 	classHolder.members.push_back(m);
@@ -135,9 +137,9 @@ void DSGen::bakeStructOrClass(ClassHolder& classHolder)
 
 
 		if (member.bitOffset > -1)
-			jmember[member.memberName + " : 1"] = std::make_tuple(member.memberType.jsonify(), member.offset, member.size, member.bitOffset);
+			jmember[member.memberName] = std::make_tuple(member.memberType.jsonify(), member.offset, member.size, member.arrayDim, member.bitOffset);
 		else
-			jmember[member.memberName] = std::make_tuple(member.memberType.jsonify(), member.offset, member.size);
+			jmember[member.memberName] = std::make_tuple(member.memberType.jsonify(), member.offset, member.size, member.arrayDim);
 		membersArray.push_back(jmember);
 	}
 	nlohmann::json j;
@@ -159,9 +161,9 @@ void DSGen::bakeStructOrClass(ClassHolder& classHolder)
 			for (const auto& param : func.functionParams)
 				functionParams.push_back(std::make_tuple(param.first.jsonify(), param.first.reference ? "&" : "", param.second));
 
-			nlohmann::json j;
-			j[func.functionName] = std::make_tuple(func.returnType.jsonify(), functionParams, func.functionOffset, func.functionFlags);
-			classFunctions.push_back(j);
+			nlohmann::json j1;
+			j1[func.functionName] = std::make_tuple(func.returnType.jsonify(), functionParams, func.functionOffset, func.functionFlags);
+			classFunctions.push_back(j1);
 		}
 		nlohmann::json f;
 
@@ -191,7 +193,7 @@ void DSGen::dump()
 	if (directory.empty())
 		throw std::exception("Please initialize a directory first!");
 
-	constexpr auto version = 10201;
+	constexpr auto version = 10202;
 
 	auto saveToDisk = [&](const nlohmann::json& json, const std::string& fileName)
 	{
